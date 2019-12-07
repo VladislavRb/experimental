@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Statistics</title>
+</head>
+<body>
+	<button onclick="main()">Show table</button>
+	<button onclick="countAverage()">Average mark</button>
+	<span>Information about students</span>
+	<br>
+	<span id="aver"></span>
+<script>
+	class Student{
+		constructor(name, surname, age, averageMark){
+			this._name = name;
+			this._surname = surname;
+			this._age = age;
+			this._averageMark = averageMark;
+			this._length = 4;
+		}
+
+		_createNewRow(){
+			let newRow = document.createElement("tr");
+			document.getElementsByTagName("table")[0].appendChild(newRow);
+			return newRow;
+		}
+
+		moveToTable(){
+			let currentRow = this._createNewRow();
+			let objValues = [this._name, this._surname, this._age, this._averageMark];
+			for(let i = 0; i < this._length; i++){
+				let cell = document.createElement("td");
+				cell.textContent = objValues[i];
+				currentRow.appendChild(cell);
+			}
+		}
+	}
+
+	function main(){
+		let existingTable = document.getElementsByTagName("table")[0];
+		if(existingTable){
+			existingTable.parentNode.removeChild(existingTable);
+		}
+		let table = document.createElement("table");
+		table.setAttribute("border", 1);
+		document.body.insertBefore(table, document.getElementsByTagName("span")[0]);
+		let names = ["Вася", "Коля", "Петя", "Света", "Катя"];
+		let surnames = ["Вставьте текст", "Привет", "Фамилия1", "Фамилия2", "Иванова"];
+
+		let students = [];
+		for(let i = 0; i < 5; i++){
+			students.push(new Student(names[i], surnames[i], Math.floor(Math.random() * 5) + 14, Math.floor(Math.random() * 5) + 5));
+		}
+		students.forEach(function(x) {x.moveToTable();});
+		document.getElementById("aver").textContent = "Average: ";
+	}
+
+	function countAverage(){
+		let allTds = document.getElementsByTagName("td");
+		console.log(allTds.length);
+		let result = 0;
+		let len = allTds.length / 4;
+		for(let i = 3; i < allTds.length; i += 4){
+			result += +allTds[i].textContent;
+		}
+		document.getElementById("aver").textContent = "Average: " + result / len;
+	}
+</script>
+</body>
+</html>
